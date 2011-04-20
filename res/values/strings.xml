@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string
+        name="welcome">欢迎使用!</string>
+    <string
+        name="app_name">Order Menu</string>
+    <string
+        name="choosemenu">选择一个功能</string>
+    <string
+        name="roomtitle">房号：</string>
+    <string
+        name="desktitle">桌号：</string>
+    <string
+        name="order">点菜</string>
+    <string
+        name="confirm">确定</string>
+    <string
+        name="cuisine_id">菜号</string>
+    <string
+        name="cuisine_name">菜名</string>
+    <string
+        name="cuisine_count">数量</string>
+    <string name="cuisine_remark">说明</string>
+</resources>
