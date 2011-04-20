@@ -1,0 +1,9 @@
+.classpath
+.project
+.*.swp
+.settings
+proguard.cfg
+assets
+bin
+gen
+
