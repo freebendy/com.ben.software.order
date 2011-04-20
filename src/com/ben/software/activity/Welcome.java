@@ -1,7 +1,9 @@
-package com.ben.software;
+package com.ben.software.activity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.ben.software.R;
 
 import android.app.Activity;
 import android.content.Intent;

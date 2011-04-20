@@ -1,15 +1,19 @@
-package com.ben.software;
+package com.ben.software.activity;
 
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class FunctionList extends ListActivity {
 
-    private static String[] mStrings = new String[] {"点菜", "查桌", "更新数据"};
+    private static final String LOG_TAG = "activity.FunctionList";
+
+    private static String[] mStrings = new String[] {"点菜", "查桌", "系统菜单", "更新数据"};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,7 +24,11 @@ public class FunctionList extends ListActivity {
 
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
-        Intent intent = new Intent(this, Order.class);
-        startActivity(intent);
+        Log.v(LOG_TAG, "onListItemClick - position: " + position + " id: " + id);
+
+        if (id == 0) {
+            Intent intent = new Intent(this, Order.class);
+            startActivity(intent);
+        }
     }
 }

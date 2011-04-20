@@ -1,9 +1,11 @@
-package com.ben.software;
+package com.ben.software.activity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.ben.software.R;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -25,6 +28,11 @@ public class Order extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, CUISINES);
+        AutoCompleteTextView input = (AutoCompleteTextView) findViewById(R.id.orderText);
+        input.setAdapter(adapter);
 
         List<Map> myData = new ArrayList<Map>();
 
@@ -96,4 +104,8 @@ public class Order extends Activity {
 
 //        return null;
     }
+
+    static final String[] CUISINES = new String[] {
+        "A0001 π¨±£º¶∂°","A0002 ”„œ„»‚Àø","A0003 ÀÆ÷Û”„"
+    };
 }
