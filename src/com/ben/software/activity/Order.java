@@ -9,10 +9,13 @@ import com.ben.software.R;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.LinearLayout;
@@ -22,19 +25,55 @@ import android.widget.TextView;
 
 public class Order extends Activity {
 
-    private static final int TEXT_SIZE= 15;
+    private static final String LOG_TAG = "activity.Order";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.order);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, CUISINES);
+//        String[] cuisines = CUISINES_MAP.keySet().toArray(new String[] {});
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+//                android.R.layout.simple_dropdown_item_1line, cuisines);
+
+        List<Map<String, String>> list = createAutoCompleteList();
+        SimpleAdapter adapter = new AutoCompleteAdapter(this, list,
+                android.R.layout.simple_dropdown_item_1line,
+                new String[] {"cuisine"}, new int[] {android.R.id.text1}, "id", "cuisine");
+
         AutoCompleteTextView input = (AutoCompleteTextView) findViewById(R.id.orderText);
+        input.setThreshold(1);
         input.setAdapter(adapter);
 
-        List<Map> myData = new ArrayList<Map>();
+        input.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(LOG_TAG, "AdapterView.OnItemClickListener - onItemClick position: " + position + " id: " + id);
+            }
+        });
+
+        input.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Log.v(LOG_TAG, "AdapterView.OnItemSelectedListener - onItemSelected position: " + position + " id: " + id);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                Log.v(LOG_TAG, "AdapterView.OnItemSelectedListener - onNothingSelected");
+            }
+        });
+
+
+
+        input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+            public boolean onEditorAction(TextView aV, int aActionId,
+                    KeyEvent aEvent) {
+                // TODO Auto-generated method stub
+                return false;
+            }
+
+        } );
+
+        List<Map<String, String>> myData = new ArrayList<Map<String, String>>();
 
         Map<String, String> map = new HashMap<String,String>();
         map.put("id", "A101");
@@ -47,7 +86,7 @@ public class Order extends Activity {
         ListView orderList = (ListView) findViewById(R.id.orderList);
 
         orderList.addHeaderView(createListHeader());
-        orderList.setAdapter(new SimpleAdapter(this, (List) myData,
+        orderList.setAdapter(new SimpleAdapter(this, (List<Map<String, String>>) myData,
                 R.layout.orderlist_row, new String[] {"id", "name", "count", "remark"},
                 new int[] {R.id.cuisineIdText, R.id.cuisineNameText,
                             R.id.cuisineCountText, R.id.cuisineRemarkText}));
@@ -67,45 +106,33 @@ public class Order extends Activity {
         remarkHeader.setText(R.string.cuisine_remark);
         remarkHeader.setGravity(Gravity.CENTER);
         return headerView;
-//        LinearLayout layout = new LinearLayout(this);
-//
-//        layout.setOrientation(LinearLayout.VERTICAL);
-//        layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-//                LayoutParams.MATCH_PARENT));
-//
-//        TextView idHeader = new TextView(this);
-//        idHeader.setLayoutParams(new LayoutParams(60,
-//                LayoutParams.MATCH_PARENT));
-//        idHeader.setTextSize(TEXT_SIZE);
-//        idHeader.setText(R.string.cuisine_id);
-//
-//        TextView nameHeader = new TextView(this);
-//        nameHeader.setLayoutParams(new LayoutParams(100,
-//                LayoutParams.MATCH_PARENT));
-//        nameHeader.setTextSize(TEXT_SIZE);
-//        idHeader.setText(R.string.cuisine_name);
-//
-//        TextView countHeader = new TextView(this);
-//        countHeader.setLayoutParams(new LayoutParams(40,
-//                LayoutParams.MATCH_PARENT));
-//        countHeader.setTextSize(TEXT_SIZE);
-//        idHeader.setText(R.string.cuisine_count);
-//
-//        TextView remarkHeader = new TextView(this);
-//        remarkHeader.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-//                LayoutParams.MATCH_PARENT));
-//        remarkHeader.setTextSize(TEXT_SIZE);
-//        idHeader.setText(R.string.cuisine_remark);
-//
-//        layout.addView(idHeader);
-//        layout.addView(nameHeader);
-//        layout.addView(countHeader);
-//        layout.addView(remarkHeader);
-
-//        return null;
     }
+
+    private static List<Map<String, String>> createAutoCompleteList() {
+        ArrayList<Map<String,String>> list = new ArrayList<Map<String,String>>();
+        int beginId = 11;
+        for (String cuisine : CUISINES) {
+            Map<String,String> map = new HashMap<String, String>();
+            map.put("cuisine", cuisine);
+            map.put("id", Integer.toString(beginId++));
+            list.add(map);
+        }
+        return list;
+    }
+
+    private static final Map<String,Integer> CUISINES_MAP  =
+        new HashMap<String, Integer>() {
+        {
+            put("A0001 π¨±£º¶∂°", 12);
+            put("A0002 ”„œ„»‚Àø", 15);
+            put("A0003 ÀÆ÷Û”„", 17);
+        }
+    };
 
     static final String[] CUISINES = new String[] {
         "A0001 π¨±£º¶∂°","A0002 ”„œ„»‚Àø","A0003 ÀÆ÷Û”„"
     };
+
+    static final int[] CUISINES_ID = new int[] {12, 15, 17};
+
 }
