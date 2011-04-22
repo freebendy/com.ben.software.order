@@ -37,7 +37,7 @@ public class OrderActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getResources().getText(R.string.order) + " - 17桌");
+        setTitle(getResources().getText(R.string.order_title) + " - 17桌");
         setContentView(R.layout.order);
 
         mAutoCompleteList = createAutoCompleteList();
@@ -139,8 +139,8 @@ public class OrderActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-        case R.id.commit_order:
-            Toast.makeText(this, "提交成功", Toast.LENGTH_LONG);
+        case R.id.order_commit:
+            Toast.makeText(this, "提交成功", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, FunctionListActivity.class);
             startActivity(intent);
             finish();

@@ -2,6 +2,5 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/order_commit"
-        android:title="@string/menu_order_commit"></item>
+        android:id="@+id/option_save" android:title="@string/menu_option_save"></item>
 </menu>

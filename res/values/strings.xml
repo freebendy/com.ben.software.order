@@ -4,16 +4,9 @@
         name="welcome">欢迎使用!</string>
     <string
         name="app_name">Order Menu</string>
-    <string
-        name="choosemenu">选择一个功能</string>
-    <string
-        name="roomtitle">房号：</string>
-    <string
-        name="desktitle">桌号：</string>
-    <string
-        name="order">点菜</string>
-    <string
-        name="add">添加</string>
+    <string name="function_list_title">选择一个功能</string>
+    <string name="order_title">点菜</string>
+    <string name="button_add">添加</string>
     <string
         name="cuisine_id">菜号</string>
     <string
@@ -21,7 +14,15 @@
     <string
         name="cuisine_count">数量</string>
     <string name="cuisine_remark">说明</string>
-    <string name="commit_order">提交菜单</string>
+    <string name="menu_order_commit">提交菜单</string>
     <string name="cuisine_tip">输入菜号或者菜名</string>
     <string name="remark_tip">额外说明</string>
+    <string name="server_address">服务器地址</string>
+    <string name="http_prefix">http://</string>
+    <string name="menu_option_save">保存</string>
+    <string name="system_option_title">系统设置</string>
+    <string name="service_address_pref_summary">程序连接的服务器地址</string>
+    <string name="service_address_pref_title">编辑服务器地址</string>
+    <string name="service_address_pref_key">server_address</string>
+    <string name="service_address_pref_dialogtitle">输入服务器地址</string>
 </resources>

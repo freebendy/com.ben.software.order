@@ -30,6 +30,9 @@ public class FunctionListActivity extends ListActivity {
         if (id == 0) {
             Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
+        } else if (id == 2) {
+            Intent intent = new Intent(this, SystemPrefereneActivity.class);
+            startActivity(intent);
         } else {
             Toast.makeText(this, "Function is not implemented yet!", Toast.LENGTH_LONG).show();
         }

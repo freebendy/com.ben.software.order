@@ -56,7 +56,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/countText"
         android:layout_width="wrap_content"
-        android:text="@string/add"
+        android:text="@string/button_add"
         android:id="@+id/addCuisine"
         android:layout_height="wrap_content"
         android:textSize="@dimen/large_textsize"

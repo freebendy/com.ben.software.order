@@ -15,10 +15,13 @@
         </activity>
 
         <activity android:name=".activity.FunctionListActivity"
-            android:label="@string/choosemenu"/>
+            android:label="@string/function_list_title"/>
 
         <activity android:name=".activity.OrderActivity"
-            android:label="@string/order"/>
+            android:label="@string/order_title"/>
+
+        <activity android:name=".activity.SystemPrefereneActivity"
+            android:label="@string/system_option_title"/>
 
         <service android:name=".service.DownloadService"></service>
 

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <EditTextPreference
+        android:key="@string/service_address_pref_key"
+        android:dialogTitle="@string/service_address_pref_dialogtitle"
+        android:summary="@string/service_address_pref_summary"
+        android:defaultValue="@string/http_prefix" android:title="@string/service_address_pref_title"></EditTextPreference>
+</PreferenceScreen>
