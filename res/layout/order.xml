@@ -1,86 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="3dip"
+    android:padding="4dip">
+    <EditText android:layout_height="wrap_content"
+        android:layout_width="45dip"
+        android:layout_marginTop="3dip"
+        android:layout_marginBottom="3dip"
+        android:text="1"
+        android:singleLine="true"
+        android:id="@+id/countText"
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:textSize="@dimen/large_textsize"/>
+    <TextView
+        android:id="@+id/orderLabel"
         android:layout_marginRight="3dip"
-        android:layout_marginTop="3dip">
-        <TextView
-            android:text="@string/roomtitle"
-            android:id="@+id/roomTitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dip"
-            android:layout_alignParentLeft="true"></TextView>
-        <TextView
-            android:text="117桌"
-            android:id="@+id/deskContentText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dip"
-            android:layout_alignParentRight="true"></TextView>
-        <TextView
-            android:text="包间1"
-            android:id="@+id/roomContentText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dip"
-            android:layout_toRightOf="@id/roomTitleText"></TextView>
-        <TextView
-            android:text="@string/desktitle"
-            android:id="@+id/deskTitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15dip"
-            android:layout_toLeftOf="@id/deskContentText"></TextView>
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <Button
-            android:layout_alignParentRight="true"
-            android:layout_width="wrap_content"
-            android:layout_marginLeft="3dip"
-            android:layout_marginRight="3dip"
-            android:layout_marginTop="3dip"
-            android:layout_marginBottom="3dip"
-            android:text="@string/confirm"
-            android:id="@+id/confirm"
-            android:layout_height="wrap_content" />
-        <EditText android:layout_height="wrap_content"
-            android:layout_width="45dip"
-            android:layout_marginTop="3dip"
-            android:layout_marginBottom="3dip"
-            android:text="1"
-            android:singleLine="true"
-            android:id="@+id/countText"
-            android:layout_toLeftOf="@+id/confirm"
-            android:gravity="center"
-            android:inputType="number"
-            android:maxLength="2"/>
-        <AutoCompleteTextView
-            android:layout_marginLeft="3dip"
-            android:layout_marginRight="3dip"
-            android:layout_marginTop="3dip"
-            android:layout_marginBottom="3dip"
-            android:layout_toLeftOf="@id/countText"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:id="@+id/orderText"
-            android:singleLine="true"
-            android:text=""
-            android:textSize="20dip" />
-    </RelativeLayout>
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/countText"
+        android:layout_alignBottom="@id/countText"
+        android:gravity="center"
+        android:text="@string/cuisine_name"
+        android:textSize="@dimen/large_textsize"/>
+    <TextView
+        android:id="@+id/countLabel"
+        android:layout_marginRight="3dip"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toLeftOf="@id/countText"
+        android:layout_alignTop="@id/countText"
+        android:layout_alignBottom="@id/countText"
+        android:gravity="center"
+        android:text="@string/cuisine_count"
+        android:textSize="@dimen/large_textsize"/>
+    <AutoCompleteTextView
+        android:layout_marginRight="3dip"
+        android:layout_marginTop="3dip"
+        android:layout_marginBottom="3dip"
+        android:layout_toLeftOf="@id/countLabel"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_toRightOf="@id/orderLabel"
+        android:id="@+id/orderText"
+        android:singleLine="true"
+        android:text=""
+        android:textSize="@dimen/large_textsize" />
+    <Button
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/countText"
+        android:layout_width="wrap_content"
+        android:text="@string/add"
+        android:id="@+id/addCuisine"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/large_textsize"
+         />
+    <TextView
+        android:id="@+id/remarkLabel"
+        android:layout_marginRight="3dip"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignTop="@id/addCuisine"
+        android:layout_alignBottom="@id/addCuisine"
+        android:gravity="center"
+        android:text="@string/cuisine_remark"
+        android:textSize="@dimen/large_textsize"/>
+     <EditText
+        android:id="@+id/remarkText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dip"
+        android:layout_toRightOf="@id/remarkLabel"
+        android:layout_toLeftOf="@id/addCuisine"
+        android:textSize="@dimen/large_textsize"
+        android:layout_below="@id/orderText"
+        android:singleLine="true"/>
     <ListView
         android:id="@+id/orderList"
+        android:layout_below="@id/remarkText"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"></ListView>
-</LinearLayout>
+</RelativeLayout>

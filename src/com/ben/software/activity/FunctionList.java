@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class FunctionList extends ListActivity {
 
@@ -29,6 +30,8 @@ public class FunctionList extends ListActivity {
         if (id == 0) {
             Intent intent = new Intent(this, Order.class);
             startActivity(intent);
+        } else {
+            Toast.makeText(this, "Function is not implemented yet!", Toast.LENGTH_SHORT);
         }
     }
 }

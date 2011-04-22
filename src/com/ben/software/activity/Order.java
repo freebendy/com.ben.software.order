@@ -8,36 +8,40 @@ import java.util.Map;
 import com.ben.software.R;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.LinearLayout;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class Order extends Activity {
 
     private static final String LOG_TAG = "activity.Order";
+    private List<Map<String, String>> mAutoCompleteList;
+    private long mCurrentCuisineId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle(getResources().getText(R.string.order) + " - 17◊¿");
         setContentView(R.layout.order);
 
-//        String[] cuisines = CUISINES_MAP.keySet().toArray(new String[] {});
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-//                android.R.layout.simple_dropdown_item_1line, cuisines);
-
-        List<Map<String, String>> list = createAutoCompleteList();
-        SimpleAdapter adapter = new AutoCompleteAdapter(this, list,
+        mAutoCompleteList = createAutoCompleteList();
+        SimpleAdapter adapter = new AutoCompleteAdapter(this, mAutoCompleteList,
                 android.R.layout.simple_dropdown_item_1line,
                 new String[] {"cuisine"}, new int[] {android.R.id.text1}, "id", "cuisine");
 
@@ -46,14 +50,17 @@ public class Order extends Activity {
         input.setAdapter(adapter);
 
         input.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View view,
+                    int position, long id) {
                 Log.v(LOG_TAG, "AdapterView.OnItemClickListener - onItemClick position: " + position + " id: " + id);
             }
         });
 
         input.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemSelected(AdapterView<?> parent, View view,
+                    int position, long id) {
                 Log.v(LOG_TAG, "AdapterView.OnItemSelectedListener - onItemSelected position: " + position + " id: " + id);
+                mCurrentCuisineId = id;
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -61,27 +68,48 @@ public class Order extends Activity {
             }
         });
 
+        input.addTextChangedListener(new TextWatcher() {
 
+            public void onTextChanged(CharSequence aS, int aStart, int aBefore,
+                    int aCount) {
+                Log.v(LOG_TAG, "TextWatcher.onNothingSelected");
+                mCurrentCuisineId = -1;
+            }
+
+            public void beforeTextChanged(CharSequence aS, int aStart, int aCount,
+                    int aAfter) {
+                // TODO Auto-generated method stub
+
+            }
+
+            public void afterTextChanged(Editable aS) {
+                // TODO Auto-generated method stub
+
+            }
+        });
 
         input.setOnEditorActionListener(new TextView.OnEditorActionListener() {
 
             public boolean onEditorAction(TextView aV, int aActionId,
                     KeyEvent aEvent) {
-                // TODO Auto-generated method stub
+                Log.v(LOG_TAG, "TextView.OnEditorActionListener - onEditorAction");
                 return false;
             }
-
         } );
 
+        Button addButton = (Button) findViewById(R.id.addCuisine);
+        addButton.setOnClickListener( new View.OnClickListener() {
+
+            public void onClick(View aView) {
+                if (mCurrentCuisineId != -1) {
+                    // TODO: ∏˘æ›ID≤È’“£¨≈–∂œ «∑Ò¥Ê‘⁄£¨ÃÌº”
+                } else {
+                 // TODO: ∏˘æ›√˚◊÷≤È’“£¨≈–∂œ «∑Ò¥Ê‘⁄£¨ÃÌº”
+                }
+            }
+        });
+
         List<Map<String, String>> myData = new ArrayList<Map<String, String>>();
-
-        Map<String, String> map = new HashMap<String,String>();
-        map.put("id", "A101");
-        map.put("name", "π¨±£º¶∂°");
-        map.put("count", "1");
-        map.put("remark", "Œ¢¿±,÷Ó»Á÷Æ¿‡£¨‡Ë¿Ô≈æ¿≤");
-
-        myData.add(map);
 
         ListView orderList = (ListView) findViewById(R.id.orderList);
 
@@ -90,6 +118,29 @@ public class Order extends Activity {
                 R.layout.orderlist_row, new String[] {"id", "name", "count", "remark"},
                 new int[] {R.id.cuisineIdText, R.id.cuisineNameText,
                             R.id.cuisineCountText, R.id.cuisineRemarkText}));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate menu from XML resource
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.order, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.commit_order:
+            Toast.makeText(this, "Ã·Ωª≥…π¶", Toast.LENGTH_LONG);
+            Intent intent = new Intent(this, FunctionList.class);
+            startActivity(intent);
+            finish();
+            return true;
+        default:
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     private View createListHeader() {
@@ -110,7 +161,7 @@ public class Order extends Activity {
 
     private static List<Map<String, String>> createAutoCompleteList() {
         ArrayList<Map<String,String>> list = new ArrayList<Map<String,String>>();
-        int beginId = 11;
+        int beginId = 1001;
         for (String cuisine : CUISINES) {
             Map<String,String> map = new HashMap<String, String>();
             map.put("cuisine", cuisine);
@@ -120,19 +171,8 @@ public class Order extends Activity {
         return list;
     }
 
-    private static final Map<String,Integer> CUISINES_MAP  =
-        new HashMap<String, Integer>() {
-        {
-            put("A0001 π¨±£º¶∂°", 12);
-            put("A0002 ”„œ„»‚Àø", 15);
-            put("A0003 ÀÆ÷Û”„", 17);
-        }
-    };
-
     static final String[] CUISINES = new String[] {
-        "A0001 π¨±£º¶∂°","A0002 ”„œ„»‚Àø","A0003 ÀÆ÷Û”„"
+        "1001 π¨±£º¶∂°","1002 ”„œ„»‚Àø","1003 ÀÆ÷Û”„"
     };
-
-    static final int[] CUISINES_ID = new int[] {12, 15, 17};
 
 }

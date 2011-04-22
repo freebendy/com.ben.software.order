@@ -1,16 +1,16 @@
 package com.ben.software.activity;
 
-import java.util.ArrayList;
+//import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import android.content.Context;
-import android.widget.Filter;
+//import android.widget.Filter;
 import android.widget.SimpleAdapter;
 
 public class AutoCompleteAdapter extends SimpleAdapter {
 
-    private ArrayList<Map<String, String>> mAllData, mDataShown;
+//    private ArrayList<Map<String, String>> mAllData, mDataShown;
 
     private String mIdKey;
 
@@ -20,7 +20,7 @@ public class AutoCompleteAdapter extends SimpleAdapter {
             List<Map<String, String>> aData, int aResource,
             String[] aFrom, int[] aTo, String aIdKey, String aContentKey) {
         super(aContext, aData, aResource, aFrom, aTo);
-        mAllData = (ArrayList<Map<String, String>>) aData;
+//        mAllData = (ArrayList<Map<String, String>>) aData;
         mIdKey = aIdKey;
         mContentKey = aContentKey;
 //        mDataShown = (ArrayList<Map<String, String>>) mAllData.clone();
@@ -58,21 +58,23 @@ public class AutoCompleteAdapter extends SimpleAdapter {
 //                FilterResults filterResults = new FilterResults();
 //
 //                if (mDataShown == null) {
+//
 //                    mDataShown = new ArrayList<Map<String, String>>(mAllData);
 //                }
 //
+//                ArrayList<Map<String, String>> list = mDataShown;
 //                if (aConstraint == null || aConstraint.length() ==0) {
-//                    filterResults.values = mDataShown;
-//                    filterResults.count = mDataShown.size();
+//                    filterResults.values = list;
+//                    filterResults.count = list.size();
 //                } else {
 //                    String constraintLC = aConstraint.toString().toLowerCase();
-//                    int count = mDataShown.size();
+//                    int count = list.size();
 //
 //                    ArrayList<Map<String, String>> newValues =
 //                        new ArrayList<Map<String, String>>(count);
 //
 //                    for (int i = 0; i < count; ++i) {
-//                        Map<String, String> map = mDataShown.get(i);
+//                        Map<String, String> map = list.get(i);
 //                        if (map != null) {
 //                            String content = map.get(mContentKey);
 //                            if (content.toLowerCase().contains(constraintLC)) {
