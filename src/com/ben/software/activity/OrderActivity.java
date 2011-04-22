@@ -5,10 +5,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ben.software.Order;
 import com.ben.software.R;
+import com.ben.software.db.DatabaseHelper;
 
 import android.app.Activity;
+import android.content.ContentResolver;
+import android.content.ContentUris;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,6 +29,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -30,8 +37,14 @@ import android.widget.Toast;
 
 public class OrderActivity extends Activity {
 
-    private static final String LOG_TAG = "activity.Order";
+    private static final String LOG_TAG = "activity.OrderActivity";
     private List<Map<String, String>> mAutoCompleteList;
+    private ListView mOrderListView;
+    private List<Map<String, String>> mDataList;
+    private EditText mCountEditor;
+    private EditText mRemarkEditor;
+    private SimpleAdapter mSimpleAdapter;
+
     private long mCurrentCuisineId = -1;
 
     @Override
@@ -39,6 +52,11 @@ public class OrderActivity extends Activity {
         super.onCreate(savedInstanceState);
         setTitle(getResources().getText(R.string.order_title) + " - 17◊¿");
         setContentView(R.layout.order);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        dbHelper.clearTestData();
+        dbHelper.addTestData();
+        dbHelper.close();
 
         mAutoCompleteList = createAutoCompleteList();
         SimpleAdapter adapter = new AutoCompleteAdapter(this, mAutoCompleteList,
@@ -53,6 +71,7 @@ public class OrderActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view,
                     int position, long id) {
                 Log.v(LOG_TAG, "AdapterView.OnItemClickListener - onItemClick position: " + position + " id: " + id);
+                mCurrentCuisineId = id;
             }
         });
 
@@ -60,7 +79,6 @@ public class OrderActivity extends Activity {
             public void onItemSelected(AdapterView<?> parent, View view,
                     int position, long id) {
                 Log.v(LOG_TAG, "AdapterView.OnItemSelectedListener - onItemSelected position: " + position + " id: " + id);
-                mCurrentCuisineId = id;
             }
 
             public void onNothingSelected(AdapterView<?> parent) {
@@ -72,7 +90,7 @@ public class OrderActivity extends Activity {
 
             public void onTextChanged(CharSequence aS, int aStart, int aBefore,
                     int aCount) {
-                Log.v(LOG_TAG, "TextWatcher.onNothingSelected");
+                Log.v(LOG_TAG, "TextWatcher.onTextChanged - aS: " + aS);
                 mCurrentCuisineId = -1;
             }
 
@@ -97,34 +115,58 @@ public class OrderActivity extends Activity {
             }
         } );
 
+        mCountEditor = (EditText) findViewById(R.id.countText);
+        mRemarkEditor = (EditText) findViewById(R.id.remarkText);
+
+        mDataList = new ArrayList<Map<String, String>>();
+
+//        Map<String, String> map = new HashMap<String, String>();
+//        map.put("id", "1001");
+//        map.put("name", "π¨±£º¶∂°");
+//        map.put("count", "1");
+//        map.put("remark", "Œ¢¿±");
+//        myData.add(map);
+
+        mOrderListView = (ListView) findViewById(R.id.orderList);
+
+        mOrderListView.addHeaderView(createListHeader());
+        mSimpleAdapter = new SimpleAdapter(this, (List<Map<String, String>>) mDataList,
+                R.layout.orderlist_row, new String[] {"id", "name", "count", "remark"},
+                new int[] {R.id.cuisineIdText, R.id.cuisineNameText,
+                            R.id.cuisineCountText, R.id.cuisineRemarkText});
+        mOrderListView.setAdapter(mSimpleAdapter);
+
         Button addButton = (Button) findViewById(R.id.addCuisine);
         addButton.setOnClickListener( new View.OnClickListener() {
 
             public void onClick(View aView) {
+                Log.v(LOG_TAG, "View.OnClickListener - onClick");
                 if (mCurrentCuisineId != -1) {
                     // TODO: ∏˘æ›ID≤È’“£¨≈–∂œ «∑Ò¥Ê‘⁄£¨ÃÌº”
+                    ContentResolver cr = getContentResolver();
+                    String[] projection = new String[] {"_id", "name","remark"};
+                    Uri uri = ContentUris.withAppendedId(Order.CuisineColumns.CONTENT_URI,mCurrentCuisineId);
+                    Cursor c = cr.query(uri, projection, null, null, null);
+                    if (c == null) {
+                        return ;
+                    }
+                    startManagingCursor(c);
+                    if (c.moveToFirst()) {
+                        Map<String, String> map = new HashMap<String, String>();
+                        map.put("id", Long.toString(mCurrentCuisineId));
+                        map.put("name", c.getString(c.getColumnIndex("name")));
+                        map.put("count", mCountEditor.getText().toString());
+                        map.put("remark", mRemarkEditor.getText().toString());
+
+                        mDataList.add(map);
+                        mSimpleAdapter.notifyDataSetChanged();
+                    }
+
                 } else {
                  // TODO: ∏˘æ›√˚◊÷≤È’“£¨≈–∂œ «∑Ò¥Ê‘⁄£¨ÃÌº”
                 }
             }
         });
-
-        List<Map<String, String>> myData = new ArrayList<Map<String, String>>();
-
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("id", "1001");
-        map.put("name", "π¨±£º¶∂°");
-        map.put("count", "1");
-        map.put("remark", "Œ¢¿±");
-        myData.add(map);
-
-        ListView orderList = (ListView) findViewById(R.id.orderList);
-
-        orderList.addHeaderView(createListHeader());
-        orderList.setAdapter(new SimpleAdapter(this, (List<Map<String, String>>) myData,
-                R.layout.orderlist_row, new String[] {"id", "name", "count", "remark"},
-                new int[] {R.id.cuisineIdText, R.id.cuisineNameText,
-                            R.id.cuisineCountText, R.id.cuisineRemarkText}));
     }
 
     @Override
@@ -138,6 +180,7 @@ public class OrderActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Log.v(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
         case R.id.order_commit:
             Toast.makeText(this, "Ã·Ωª≥…π¶", Toast.LENGTH_LONG).show();
@@ -166,20 +209,40 @@ public class OrderActivity extends Activity {
         return headerView;
     }
 
-    private static List<Map<String, String>> createAutoCompleteList() {
+    private List<Map<String, String>> createAutoCompleteList() {
+        Log.v(LOG_TAG, "createAutoCompleteList");
         ArrayList<Map<String,String>> list = new ArrayList<Map<String,String>>();
-        int beginId = 1001;
-        for (String cuisine : CUISINES) {
-            Map<String,String> map = new HashMap<String, String>();
-            map.put("cuisine", cuisine);
-            map.put("id", Integer.toString(beginId++));
-            list.add(map);
+        ContentResolver cr = getContentResolver();
+        String[] projection = new String[] {"_id", "name","remark"};
+        Cursor c = cr.query(Order.CuisineColumns.CONTENT_URI, projection, null, null, null);
+        if (c == null) {
+            return list;
         }
+        startManagingCursor(c);
+
+        boolean succeeded = c.moveToFirst();
+        while (succeeded) {
+            Map<String,String> map = new HashMap<String, String>();
+            String name = c.getString(c.getColumnIndex("name"));
+            String id = Integer.toString(c.getInt(c.getColumnIndex("_id")));
+            map.put("cuisine",id + " " + name);
+            map.put("id", id);
+            list.add(map);
+            succeeded = c.moveToNext();
+        }
+
+//        int beginId = 1001;
+//        for (String cuisine : CUISINES) {
+//            Map<String,String> map = new HashMap<String, String>();
+//            map.put("cuisine", cuisine);
+//            map.put("id", Integer.toString(beginId++));
+//            list.add(map);
+//        }
         return list;
     }
 
-    static final String[] CUISINES = new String[] {
-        "1001 π¨±£º¶∂°","1002 ”„œ„»‚Àø","1003 ÀÆ÷Û”„"
-    };
+//    static final String[] CUISINES = new String[] {
+//        "1001 π¨±£º¶∂°","1002 ”„œ„»‚Àø","1003 ÀÆ÷Û”„"
+//    };
 
 }
