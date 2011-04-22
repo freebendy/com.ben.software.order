@@ -18,9 +18,9 @@ public class WelcomeActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
 
-        Intent intent = new Intent(WelcomeActivity.this, OrderActivity.class);
+        Intent intent = new Intent(WelcomeActivity.this, FunctionListActivity.class);
         startActivity(intent);
-        WelcomeActivity.this.finish();
+        finish();
 
 //        TimerTask timerTask = new TimerTask() {
 //            @Override

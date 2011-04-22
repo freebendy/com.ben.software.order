@@ -31,7 +31,7 @@ public class FunctionListActivity extends ListActivity {
             Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "Function is not implemented yet!", Toast.LENGTH_SHORT);
+            Toast.makeText(this, "Function is not implemented yet!", Toast.LENGTH_LONG).show();
         }
     }
 }
