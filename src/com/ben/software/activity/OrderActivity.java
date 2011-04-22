@@ -28,7 +28,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class Order extends Activity {
+public class OrderActivity extends Activity {
 
     private static final String LOG_TAG = "activity.Order";
     private List<Map<String, String>> mAutoCompleteList;
@@ -111,6 +111,13 @@ public class Order extends Activity {
 
         List<Map<String, String>> myData = new ArrayList<Map<String, String>>();
 
+        Map<String, String> map = new HashMap<String, String>();
+        map.put("id", "1001");
+        map.put("name", "宫保鸡丁");
+        map.put("count", "1");
+        map.put("remark", "微辣");
+        myData.add(map);
+
         ListView orderList = (ListView) findViewById(R.id.orderList);
 
         orderList.addHeaderView(createListHeader());
@@ -134,7 +141,7 @@ public class Order extends Activity {
         switch (item.getItemId()) {
         case R.id.commit_order:
             Toast.makeText(this, "提交成功", Toast.LENGTH_LONG);
-            Intent intent = new Intent(this, FunctionList.class);
+            Intent intent = new Intent(this, FunctionListActivity.class);
             startActivity(intent);
             finish();
             return true;

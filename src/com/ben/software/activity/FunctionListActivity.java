@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class FunctionList extends ListActivity {
+public class FunctionListActivity extends ListActivity {
 
     private static final String LOG_TAG = "activity.FunctionList";
 
@@ -28,7 +28,7 @@ public class FunctionList extends ListActivity {
         Log.v(LOG_TAG, "onListItemClick - position: " + position + " id: " + id);
 
         if (id == 0) {
-            Intent intent = new Intent(this, Order.class);
+            Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
         } else {
             Toast.makeText(this, "Function is not implemented yet!", Toast.LENGTH_SHORT);

@@ -22,4 +22,6 @@
         name="cuisine_count">数量</string>
     <string name="cuisine_remark">说明</string>
     <string name="commit_order">提交菜单</string>
+    <string name="cuisine_tip">输入菜号或者菜名</string>
+    <string name="remark_tip">额外说明</string>
 </resources>

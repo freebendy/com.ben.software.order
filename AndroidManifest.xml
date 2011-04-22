@@ -6,7 +6,7 @@
 
 
     <application android:icon="@drawable/icon" android:label="@string/app_name">
-        <activity android:name=".activity.Welcome"
+        <activity android:name="activity.WelcomeActivity"
                   android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -14,13 +14,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.FunctionList"
+        <activity android:name="activity.FunctionListActivity"
             android:label="@string/choosemenu"/>
 
-        <activity android:name=".activity.Order"
+        <activity android:name="activity.OrderActivity"
             android:label="@string/order"/>
 
-        <service android:name=".service.DownloadService"></service>
+        <service android:name="service.DownloadService"></service>
 
     </application>
 </manifest>

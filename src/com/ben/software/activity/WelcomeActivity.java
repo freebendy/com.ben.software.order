@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Window;
 
-public class Welcome extends Activity {
+public class WelcomeActivity extends Activity {
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,9 +18,9 @@ public class Welcome extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
 
-        Intent intent = new Intent(Welcome.this, Order.class);
+        Intent intent = new Intent(WelcomeActivity.this, OrderActivity.class);
         startActivity(intent);
-        Welcome.this.finish();
+        WelcomeActivity.this.finish();
 
 //        TimerTask timerTask = new TimerTask() {
 //            @Override

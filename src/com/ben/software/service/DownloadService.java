@@ -1,6 +1,6 @@
 package com.ben.software.service;
 
-import com.ben.software.OrderMenu;
+import com.ben.software.Order;
 
 import android.app.Service;
 import android.content.Intent;
@@ -65,11 +65,11 @@ public class DownloadService extends Service {
         public void handleMessage(Message msg) {
             Log.v("BenTag.MessagerService", "handleMessage - Pid: " + Process.myPid() + " thread id: " + Thread.currentThread().getName());
             switch (msg.what) {
-                case OrderMenu.MSG_SEND_ORDER:
+                case Order.MSG_SEND_ORDER:
                     break;
-                case OrderMenu.MSG_QUERY_ORDERS:
+                case Order.MSG_QUERY_ORDERS:
                     break;
-                case OrderMenu.MSG_UPDATE_DATA:
+                case Order.MSG_UPDATE_DATA:
                     break;
                 default:
                     super.handleMessage(msg);

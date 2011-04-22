@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="4dip">
+    android:padding="3dip">
     <EditText android:layout_height="wrap_content"
         android:layout_width="45dip"
         android:layout_marginTop="3dip"
@@ -50,7 +50,8 @@
         android:id="@+id/orderText"
         android:singleLine="true"
         android:text=""
-        android:textSize="@dimen/large_textsize" />
+        android:textSize="@dimen/large_textsize"
+        android:hint="@string/cuisine_tip"/>
     <Button
         android:layout_alignParentRight="true"
         android:layout_below="@id/countText"
@@ -80,7 +81,8 @@
         android:layout_toLeftOf="@id/addCuisine"
         android:textSize="@dimen/large_textsize"
         android:layout_below="@id/orderText"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:hint="@string/remark_tip"/>
     <ListView
         android:id="@+id/orderList"
         android:layout_below="@id/remarkText"
