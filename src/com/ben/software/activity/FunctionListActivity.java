@@ -1,5 +1,6 @@
 package com.ben.software.activity;
 
+import com.ben.software.R;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,14 +14,14 @@ public class FunctionListActivity extends ListActivity {
 
     private static final String LOG_TAG = "activity.FunctionList";
 
-    private static String[] mStrings = new String[] {"点菜", "查桌", "系统菜单", "更新数据"};
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        String[] itemStrings = getResources().getStringArray(R.array.function_list_items);
+
         setListAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, mStrings));
+                android.R.layout.simple_list_item_1, itemStrings));
     }
 
     @Override

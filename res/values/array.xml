@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="function_list_items">
+        <item>点菜</item>
+        <item>查桌</item>
+        <item>系统菜单</item>
+        <item>更新数据</item>
+    </string-array>
+</resources>

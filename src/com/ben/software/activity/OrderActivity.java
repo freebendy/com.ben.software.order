@@ -50,7 +50,7 @@ public class OrderActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getResources().getText(R.string.order_title) + " - 17×À");
+        setTitle(getResources().getText(R.string.order_title) + " - 17æ¡Œ");
         setContentView(R.layout.order);
 
         DatabaseHelper dbHelper = new DatabaseHelper(this);
@@ -120,13 +120,6 @@ public class OrderActivity extends Activity {
 
         mDataList = new ArrayList<Map<String, String>>();
 
-//        Map<String, String> map = new HashMap<String, String>();
-//        map.put("id", "1001");
-//        map.put("name", "¹¬±£¼¦¶¡");
-//        map.put("count", "1");
-//        map.put("remark", "Î¢À±");
-//        myData.add(map);
-
         mOrderListView = (ListView) findViewById(R.id.orderList);
 
         mOrderListView.addHeaderView(createListHeader());
@@ -142,7 +135,7 @@ public class OrderActivity extends Activity {
             public void onClick(View aView) {
                 Log.v(LOG_TAG, "View.OnClickListener - onClick");
                 if (mCurrentCuisineId != -1) {
-                    // TODO: ¸ù¾İID²éÕÒ£¬ÅĞ¶ÏÊÇ·ñ´æÔÚ£¬Ìí¼Ó
+                    // TODO: Find in database.
                     ContentResolver cr = getContentResolver();
                     String[] projection = new String[] {"_id", "name","remark"};
                     Uri uri = ContentUris.withAppendedId(Order.CuisineColumns.CONTENT_URI,mCurrentCuisineId);
@@ -163,7 +156,7 @@ public class OrderActivity extends Activity {
                     }
 
                 } else {
-                 // TODO: ¸ù¾İÃû×Ö²éÕÒ£¬ÅĞ¶ÏÊÇ·ñ´æÔÚ£¬Ìí¼Ó
+                 // TODO: æ ¹æ®åå­—æŸ¥æ‰¾ï¼Œåˆ¤æ–­æ˜¯å¦å­˜åœ¨ï¼Œæ·»åŠ 
                 }
             }
         });
@@ -183,7 +176,7 @@ public class OrderActivity extends Activity {
         Log.v(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
         case R.id.order_commit:
-            Toast.makeText(this, "Ìá½»³É¹¦", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "æäº¤æˆåŠŸ", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, FunctionListActivity.class);
             startActivity(intent);
             finish();
@@ -231,18 +224,7 @@ public class OrderActivity extends Activity {
             succeeded = c.moveToNext();
         }
 
-//        int beginId = 1001;
-//        for (String cuisine : CUISINES) {
-//            Map<String,String> map = new HashMap<String, String>();
-//            map.put("cuisine", cuisine);
-//            map.put("id", Integer.toString(beginId++));
-//            list.add(map);
-//        }
         return list;
     }
-
-//    static final String[] CUISINES = new String[] {
-//        "1001 ¹¬±£¼¦¶¡","1002 ÓãÏãÈâË¿","1003 Ë®ÖóÓã"
-//    };
 
 }
