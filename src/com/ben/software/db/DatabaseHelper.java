@@ -72,15 +72,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         for (int i = 1; i < 6; ++i) {
             ContentValues values1 = new ContentValues();
-            values1.put("name", "°ü" + Integer.toString(i));
+            values1.put("name", "åŒ…é—´" + Integer.toString(i));
             db.insert(DB_TARGETS_TABLE, null, values1);
 
             ContentValues values2 = new ContentValues();
-            values1.put("name", "×À" + Integer.toString(i));
+            values1.put("name", "æ¡Œå­" + Integer.toString(i));
             db.insert(DB_TARGETS_TABLE, null, values2);
 
             ContentValues values3 = new ContentValues();
-            values1.put("name", "ÁÙÊ±" + Integer.toString(i));
+            values1.put("name", "å…¶ä»–" + Integer.toString(i));
             db.insert(DB_TARGETS_TABLE, null, values3);
         }
         db.setTransactionSuccessful();
@@ -97,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     static final String[] CUISINESNAME = new String[] {
-        "¹¬±£¼¦¶¡","ÓãÏãÈâË¿","Ë®ÖóÓã"
+        "å®«ä¿é¸¡ä¸","é±¼é¦™è‚‰ä¸","æ°´ç…®é±¼","èœ€å›½çƒ¤é±¼","æ‰‹æ’•åŒ…èœ"
     };
 
 }
