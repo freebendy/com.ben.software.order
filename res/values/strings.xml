@@ -7,8 +7,7 @@
     <string name="function_list_title">选择一个功能</string>
     <string name="order_title">点菜</string>
     <string name="button_add">添加</string>
-    <string
-        name="cuisine_id">菜号</string>
+    <string name="cuisine_code">菜号</string>
     <string
         name="cuisine_name">菜名</string>
     <string
@@ -25,4 +24,5 @@
     <string name="service_address_pref_title">编辑服务器地址</string>
     <string name="service_address_pref_key">server_address</string>
     <string name="service_address_pref_dialogtitle">输入服务器地址</string>
+    <string name="cuisine_price">价格</string>
 </resources>

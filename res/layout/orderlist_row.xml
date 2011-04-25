@@ -9,7 +9,7 @@
     android:layout_marginTop="3dip">
     <TextView
         android:text=""
-        android:id="@+id/cuisineIdText"
+        android:id="@+id/cuisineCodeText"
         android:layout_width="40dip"
         android:layout_height="wrap_content"
         android:textSize="@dimen/normal_textsize"
@@ -18,6 +18,13 @@
         android:text=""
         android:id="@+id/cuisineNameText"
         android:layout_width="100dip"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/normal_textsize"
+        android:gravity="center"></TextView>
+    <TextView
+        android:text=""
+        android:id="@+id/cuisinePriceText"
+        android:layout_width="40dip"
         android:layout_height="wrap_content"
         android:textSize="@dimen/normal_textsize"
         android:gravity="center"></TextView>

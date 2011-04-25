@@ -65,6 +65,24 @@ public final class Order {
         public static final String NAME = "name";
 
         /**
+         * The code of the cuisine
+         * <P>Type: TEXT</P>
+         */
+        public static final String CODE = "code";
+
+        /**
+         * The price of the cuisine
+         * <P>Type: TEXT</P>
+         */
+        public static final String PRICE = "price";
+
+        /**
+         * The discount of the cuisine
+         * <P>Type: TEXT</P>
+         */
+        public static final String DISCOUNT = "discount";
+
+        /**
          * The remark of the cuisine
          * <P>Type: TEXT</P>
          */
@@ -105,43 +123,10 @@ public final class Order {
         public static final String NAME = "name";
 
         /**
-         * The remark of the target
+         * The use state of the target
          * <P>Type: TEXT</P>
          */
-        public static final String TYPEID = "typeid";
+        public static final String ISUSED = "isused";
     }
 
-    /**
-     * Target type table
-     */
-    public static final class TargetTypeColumns implements BaseColumns {
-        // This class cannot be instantiated
-        private TargetTypeColumns() {}
-
-        /**
-         * The content:// style URL for this table
-         */
-        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/targettype");
-
-        /**
-         * The default sort order for this table
-         */
-        public static final String DEFAULT_SORT_ORDER = "_id DESC";
-
-        /**
-         * The MIME type of {@link #CONTENT_URI} providing a directory of target type.
-         */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.roadmap.targettype";
-
-        /**
-         * The MIME type of a {@link #CONTENT_URI} sub-directory of a single target type.
-         */
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.roadmap.targettype";
-
-        /**
-         * The name of the target type
-         * <P>Type: TEXT</P>
-         */
-        public static final String NAME = "name";
-    }
 }
