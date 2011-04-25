@@ -219,7 +219,7 @@ public class OrderActivity extends Activity {
                 String id = Integer.toString(c.getInt(c.getColumnIndex("_id")));
                 String code = Integer.toString(c.getInt(c.getColumnIndex("code")));
 
-                if (code != null || !code.isEmpty()) {
+                if (code != null && !code.isEmpty()) {
                     name = code + " " + name;
                 }
 
