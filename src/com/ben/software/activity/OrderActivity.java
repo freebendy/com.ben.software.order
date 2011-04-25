@@ -10,7 +10,6 @@ import com.ben.software.R;
 import com.ben.software.db.DatabaseHelper;
 
 import android.app.Activity;
-import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Intent;
 import android.database.Cursor;
@@ -91,7 +90,7 @@ public class OrderActivity extends Activity {
             public void onTextChanged(CharSequence aS, int aStart, int aBefore,
                     int aCount) {
                 Log.v(LOG_TAG, "TextWatcher.onTextChanged - aS: " + aS);
-                mCurrentCuisineId = -1;
+//                mCurrentCuisineId = -1;
             }
 
             public void beforeTextChanged(CharSequence aS, int aStart, int aCount,
@@ -124,9 +123,10 @@ public class OrderActivity extends Activity {
 
         mOrderListView.addHeaderView(createListHeader());
         mSimpleAdapter = new SimpleAdapter(this, (List<Map<String, String>>) mDataList,
-                R.layout.orderlist_row, new String[] {"id", "name", "count", "remark"},
-                new int[] {R.id.cuisineIdText, R.id.cuisineNameText,
-                            R.id.cuisineCountText, R.id.cuisineRemarkText});
+                R.layout.orderlist_row, new String[] {"code", "name", "price", "count", "remark"},
+                new int[] {R.id.cuisineCodeText, R.id.cuisineNameText,
+                            R.id.cuisinePriceText, R.id.cuisineCountText,
+                            R.id.cuisineRemarkText});
         mOrderListView.setAdapter(mSimpleAdapter);
 
         Button addButton = (Button) findViewById(R.id.addCuisine);
@@ -136,23 +136,24 @@ public class OrderActivity extends Activity {
                 Log.v(LOG_TAG, "View.OnClickListener - onClick");
                 if (mCurrentCuisineId != -1) {
                     // TODO: Find in database.
-                    ContentResolver cr = getContentResolver();
-                    String[] projection = new String[] {"_id", "name","remark"};
+                    String[] projection = new String[] {"_id", "name", "code" ,"price","remark"};
                     Uri uri = ContentUris.withAppendedId(Order.CuisineColumns.CONTENT_URI,mCurrentCuisineId);
-                    Cursor c = cr.query(uri, projection, null, null, null);
-                    if (c == null) {
-                        return ;
-                    }
-                    startManagingCursor(c);
-                    if (c.moveToFirst()) {
-                        Map<String, String> map = new HashMap<String, String>();
-                        map.put("id", Long.toString(mCurrentCuisineId));
-                        map.put("name", c.getString(c.getColumnIndex("name")));
-                        map.put("count", mCountEditor.getText().toString());
-                        map.put("remark", mRemarkEditor.getText().toString());
+                    Cursor c = managedQuery(uri, projection, null, null, null);
+                    if (c != null) {
+                        if (c.moveToFirst()) {
+                            Map<String, String> map = new HashMap<String, String>();
+                            map.put("id", Long.toString(mCurrentCuisineId));
+                            map.put("name", c.getString(c.getColumnIndex("name")));
+                            map.put("code", c.getString(c.getColumnIndex("code")));
+                            map.put("price", c.getString(c.getColumnIndex("price")));
+                            map.put("count", mCountEditor.getText().toString());
+                            map.put("remark", mRemarkEditor.getText().toString());
 
-                        mDataList.add(map);
-                        mSimpleAdapter.notifyDataSetChanged();
+                            mDataList.add(map);
+                            mSimpleAdapter.notifyDataSetChanged();
+                        }
+                    } else {
+                        return;
                     }
 
                 } else {
@@ -190,10 +191,12 @@ public class OrderActivity extends Activity {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View headerView = inflater.inflate(R.layout.orderlist_row, null);
-        TextView idHeader = (TextView) headerView.findViewById(R.id.cuisineIdText);
-        idHeader.setText(R.string.cuisine_id);
+        TextView codeHeader = (TextView) headerView.findViewById(R.id.cuisineCodeText);
+        codeHeader.setText(R.string.cuisine_code);
         TextView nameHeader = (TextView) headerView.findViewById(R.id.cuisineNameText);
         nameHeader.setText(R.string.cuisine_name);
+        TextView priceHeader = (TextView) headerView.findViewById(R.id.cuisinePriceText);
+        priceHeader.setText(R.string.cuisine_price);
         TextView countHeader = (TextView) headerView.findViewById(R.id.cuisineCountText);
         countHeader.setText(R.string.cuisine_count);
         TextView remarkHeader = (TextView) headerView.findViewById(R.id.cuisineRemarkText);
@@ -205,23 +208,26 @@ public class OrderActivity extends Activity {
     private List<Map<String, String>> createAutoCompleteList() {
         Log.v(LOG_TAG, "createAutoCompleteList");
         ArrayList<Map<String,String>> list = new ArrayList<Map<String,String>>();
-        ContentResolver cr = getContentResolver();
-        String[] projection = new String[] {"_id", "name","remark"};
-        Cursor c = cr.query(Order.CuisineColumns.CONTENT_URI, projection, null, null, null);
-        if (c == null) {
-            return list;
-        }
-        startManagingCursor(c);
+        String[] projection = new String[] {"_id", "name", "code", "price", "discount", "remark"};
+        Cursor c = managedQuery(Order.CuisineColumns.CONTENT_URI, projection, null, null, null);
 
-        boolean succeeded = c.moveToFirst();
-        while (succeeded) {
-            Map<String,String> map = new HashMap<String, String>();
-            String name = c.getString(c.getColumnIndex("name"));
-            String id = Integer.toString(c.getInt(c.getColumnIndex("_id")));
-            map.put("cuisine",id + " " + name);
-            map.put("id", id);
-            list.add(map);
-            succeeded = c.moveToNext();
+        if (c != null) {
+            boolean succeeded = c.moveToFirst();
+            while (succeeded) {
+                Map<String,String> map = new HashMap<String, String>();
+                String name = c.getString(c.getColumnIndex("name"));
+                String id = Integer.toString(c.getInt(c.getColumnIndex("_id")));
+                String code = Integer.toString(c.getInt(c.getColumnIndex("code")));
+
+                if (code != null || !code.isEmpty()) {
+                    name = code + " " + name;
+                }
+
+                map.put("cuisine",name);
+                map.put("id", id);
+                list.add(map);
+                succeeded = c.moveToNext();
+            }
         }
 
         return list;

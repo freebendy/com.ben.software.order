@@ -5,7 +5,6 @@ import java.util.HashMap;
 import com.ben.software.Order;
 import com.ben.software.Order.CuisineColumns;
 import com.ben.software.Order.TargetColumns;
-import com.ben.software.Order.TargetTypeColumns;
 import com.ben.software.db.DatabaseHelper;
 
 import android.content.ContentProvider;
@@ -25,14 +24,11 @@ public class OrderProvider extends ContentProvider {
     private static final int CUISINE_ID = 2;
     private static final int TARGETS = 3;
     private static final int TARGET_ID = 4;
-    private static final int TARGETTYPES = 5;
-    private static final int TARGETTYPE_ID = 6;
 
     private static UriMatcher mUriMatcher;
 
     private static HashMap<String, String> mCuisinesProjectionMap;
     private static HashMap<String, String> mTargetsProjectionMap;
-    private static HashMap<String, String> mTargetTypeProjectionMap;
 
     private DatabaseHelper mDatabaseHelper;
 
@@ -49,7 +45,6 @@ public class OrderProvider extends ContentProvider {
         Log.v(LOG_TAG, "query");
 
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String[] projection = aProjection;
 
         switch (mUriMatcher.match(aUri)) {
         case CUISINES:
@@ -64,33 +59,14 @@ public class OrderProvider extends ContentProvider {
             break;
 
         case TARGETS:
-            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE + " INNER JOIN "
-                    + DatabaseHelper.DB_TARGETTYPE_TABLE);
+            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE);
             qb.setProjectionMap(mTargetsProjectionMap);
-            if (projection == null ) {
-                projection = mTargetsProjectionMap.keySet().toArray(new String[] {});
-            }
             break;
 
         case TARGET_ID:
-            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE + " INNER JOIN "
-                    + DatabaseHelper.DB_TARGETTYPE_TABLE);
+            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE);
             qb.setProjectionMap(mTargetsProjectionMap);
             qb.appendWhere(TargetColumns._ID + "=" + aUri.getPathSegments().get(1));
-            if (projection == null ) {
-                projection = mTargetsProjectionMap.keySet().toArray(new String[] {});
-            }
-            break;
-
-        case TARGETTYPES:
-            qb.setTables(DatabaseHelper.DB_TARGETTYPE_TABLE);
-            qb.setProjectionMap(mTargetTypeProjectionMap);
-            break;
-
-        case TARGETTYPE_ID:
-            qb.setTables(DatabaseHelper.DB_TARGETTYPE_TABLE);
-            qb.setProjectionMap(mTargetTypeProjectionMap);
-            qb.appendWhere(TargetTypeColumns._ID + "=" + aUri.getPathSegments().get(1));
             break;
 
         default:
@@ -99,7 +75,7 @@ public class OrderProvider extends ContentProvider {
 
         // Get the database and run the query
         SQLiteDatabase db = mDatabaseHelper.getReadableDatabase();
-        Cursor cursor = qb.query(db, projection, aSelection, aSelectionArgs, null, null, aSortOrder);
+        Cursor cursor = qb.query(db, aProjection, aSelection, aSelectionArgs, null, null, aSortOrder);
 
         // Tell the cursor what uri to watch, so it knows when its source data changes
         cursor.setNotificationUri(getContext().getContentResolver(), aUri);
@@ -125,14 +101,6 @@ public class OrderProvider extends ContentProvider {
 
         case TARGET_ID:
             type = TargetColumns.CONTENT_ITEM_TYPE;
-            break;
-
-        case TARGETTYPES:
-            type = TargetTypeColumns.CONTENT_TYPE;
-            break;
-
-        case TARGETTYPE_ID:
-            type = TargetTypeColumns.CONTENT_ITEM_TYPE;
             break;
 
         default:
@@ -169,23 +137,19 @@ public class OrderProvider extends ContentProvider {
         mUriMatcher.addURI(Order.AUTHORITY, "cuisines/#", CUISINE_ID);
         mUriMatcher.addURI(Order.AUTHORITY, "targets", TARGETS);
         mUriMatcher.addURI(Order.AUTHORITY, "targets/#", TARGET_ID);
-        mUriMatcher.addURI(Order.AUTHORITY, "targettype", TARGETTYPES);
-        mUriMatcher.addURI(Order.AUTHORITY, "targettype/#", TARGETTYPE_ID);
 
         mCuisinesProjectionMap = new HashMap<String, String>();
         mCuisinesProjectionMap.put(CuisineColumns._ID, CuisineColumns._ID);
         mCuisinesProjectionMap.put(CuisineColumns.NAME, CuisineColumns.NAME);
+        mCuisinesProjectionMap.put(CuisineColumns.CODE, CuisineColumns.CODE);
+        mCuisinesProjectionMap.put(CuisineColumns.PRICE, CuisineColumns.PRICE);
+        mCuisinesProjectionMap.put(CuisineColumns.DISCOUNT, CuisineColumns.DISCOUNT);
         mCuisinesProjectionMap.put(CuisineColumns.REMARK, CuisineColumns.REMARK);
 
-        mTargetTypeProjectionMap = new HashMap<String, String>();
-        mTargetTypeProjectionMap.put(TargetTypeColumns._ID, TargetTypeColumns._ID);
-        mTargetTypeProjectionMap.put(TargetTypeColumns.NAME, TargetTypeColumns.NAME);
-
         mTargetsProjectionMap = new HashMap<String, String>();
-        mTargetsProjectionMap.put(TargetColumns._ID, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns._ID);
-        mTargetsProjectionMap.put(TargetColumns.NAME, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.NAME);
-        mTargetsProjectionMap.put(TargetColumns.TYPEID, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.TYPEID);
-        mTargetsProjectionMap.put("typename", DatabaseHelper.DB_TARGETTYPE_TABLE + ".name as typename");
+        mTargetsProjectionMap.put(TargetColumns._ID, TargetColumns._ID);
+        mTargetsProjectionMap.put(TargetColumns.NAME, TargetColumns.NAME);
+        mTargetsProjectionMap.put(TargetColumns.ISUSED, TargetColumns.ISUSED);
     }
 
 }
