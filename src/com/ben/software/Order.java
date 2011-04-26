@@ -72,13 +72,13 @@ public final class Order {
 
         /**
          * The price of the cuisine
-         * <P>Type: TEXT</P>
+         * <P>Type: REAL</P>
          */
         public static final String PRICE = "price";
 
         /**
          * The discount of the cuisine
-         * <P>Type: TEXT</P>
+         * <P>Type: REAL</P>
          */
         public static final String DISCOUNT = "discount";
 
@@ -124,9 +124,61 @@ public final class Order {
 
         /**
          * The use state of the target
-         * <P>Type: TEXT</P>
+         * <P>Type: BOOLEAN</P>
          */
         public static final String ISUSED = "isused";
+    }
+
+    /**
+     * Order table
+     */
+    public static final class OrderColumns implements BaseColumns {
+        // This class cannot be instantiated
+        private OrderColumns() {}
+
+        /**
+         * The content:// style URL for this table
+         */
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/orders");
+
+        /**
+         * The default sort order for this table
+         */
+        public static final String DEFAULT_SORT_ORDER = "_id DESC";
+
+        /**
+         * The MIME type of {@link #CONTENT_URI} providing a directory of order.
+         */
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.roadmap.order";
+
+        /**
+         * The MIME type of a {@link #CONTENT_URI} sub-directory of a single order.
+         */
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.roadmap.order";
+
+        /**
+         * The target id of the order
+         * <P>Type: INTEGER</P>
+         */
+        public static final String TARGETID = "targetid";
+
+        /**
+         * The cuisine id of the order
+         * <P>Type: INTEGER</P>
+         */
+        public static final String CUISINEID = "cuisineid";
+
+        /**
+         * The count of the cuisine in the order
+         * <P>Type: INTEGER</P>
+         */
+        public static final String COUNT = "count";
+
+        /**
+         * The remark of the order
+         * <P>Type: TEXT</P>
+         */
+        public static final String REMARK = "remark";
     }
 
 }
