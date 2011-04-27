@@ -4,6 +4,7 @@ package com.ben.software.activity;
 //import java.util.TimerTask;
 
 import com.ben.software.R;
+import com.ben.software.db.DatabaseHelper;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +18,11 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.main);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+        dbHelper.clearTestData();
+        dbHelper.addTestData();
+        dbHelper.close();
 
         Intent intent = new Intent(WelcomeActivity.this, FunctionListActivity.class);
         startActivity(intent);

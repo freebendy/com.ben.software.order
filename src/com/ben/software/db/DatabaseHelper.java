@@ -1,4 +1,4 @@
-package com.ben.software.db;
+﻿package com.ben.software.db;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         "create table " + DB_ORDERS_TABLE
         + "(_id INTEGER PRIMARY KEY AUTOINCREMENT, "
         + "targetid INTEGER NOT NULL, cuisineid INTEGER NOT NULL, "
-        + "count INTEGER NOT NULL  DEFAULT 1, remark TEXT);";
+        + "count INTEGER NOT NULL DEFAULT 1, remark TEXT);";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -73,14 +73,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         for (int i = 1; i < 6; ++i) {
             ContentValues values1 = new ContentValues();
             values1.put("name", "包间" + Integer.toString(i));
-            db.insert(DB_TARGETS_TABLE, null, values1);
+            long rowid = db.insert(DB_TARGETS_TABLE, null, values1);
+            if (rowid != -1) {
+                ContentValues valuesOrder = new ContentValues();
+                valuesOrder.put("targetid", rowid);
+                valuesOrder.put("cuisineid", 1001);
+                db.insert(DB_ORDERS_TABLE, null, valuesOrder);
+            }
 
             ContentValues values2 = new ContentValues();
             values1.put("name", "桌子" + Integer.toString(i));
             db.insert(DB_TARGETS_TABLE, null, values2);
 
             ContentValues values3 = new ContentValues();
-            values1.put("name", "其他" + Integer.toString(i));
+            values1.put("name", "临时" + Integer.toString(i));
             db.insert(DB_TARGETS_TABLE, null, values3);
         }
         db.setTransactionSuccessful();
@@ -97,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     static final String[] CUISINESNAME = new String[] {
-        "宫保鸡丁","鱼香肉丝","水煮鱼","蜀国烤鱼","手撕包菜"
+        "宫保鸡丁","鱼香肉丝","水煮鱼","蜀国烤鱼","上汤娃娃菜"
     };
 
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import com.ben.software.Order;
 import com.ben.software.R;
-import com.ben.software.db.DatabaseHelper;
 
 import android.app.Activity;
 import android.content.ContentUris;
@@ -49,13 +48,8 @@ public class OrderActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getResources().getText(R.string.order_title) + " - 17桌");
+        setTitle(getResources().getText(R.string.title_order) + " - 17桌");
         setContentView(R.layout.order);
-
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
-        dbHelper.clearTestData();
-        dbHelper.addTestData();
-        dbHelper.close();
 
         mAutoCompleteList = createAutoCompleteList();
         SimpleAdapter adapter = new AutoCompleteAdapter(this, mAutoCompleteList,
