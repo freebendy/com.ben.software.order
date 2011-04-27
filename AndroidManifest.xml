@@ -15,13 +15,16 @@
         </activity>
 
         <activity android:name=".activity.FunctionListActivity"
-            android:label="@string/function_list_title"/>
+            android:label="@string/title_function_list"/>
 
         <activity android:name=".activity.OrderActivity"
-            android:label="@string/order_title"/>
+            android:label="@string/title_order"/>
+
+        <activity android:name=".activity.TargetListActivity"
+            android:label="@string/title_target_list"/>
 
         <activity android:name=".activity.SystemPrefereneActivity"
-            android:label="@string/system_option_title"/>
+            android:label="@string/title_system_option"/>
 
         <service android:name=".service.DownloadService"></service>
 
