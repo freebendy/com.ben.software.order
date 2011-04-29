@@ -2,5 +2,6 @@
 <menu
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/option_save" android:title="@string/menu_option_save"></item>
+        android:title="@string/menu_context_delete"
+        android:id="@+id/context_delete"></item>
 </menu>

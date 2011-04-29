@@ -13,7 +13,7 @@
     <string
         name="cuisine_count">数量</string>
     <string name="cuisine_remark">说明</string>
-    <string name="menu_order_commit">提交菜单</string>
+    <string name="menu_option_commit">提交菜单</string>
     <string name="cuisine_tip">输入菜号或者菜名</string>
     <string name="remark_tip">额外说明</string>
     <string name="server_address">服务器地址</string>
@@ -27,4 +27,5 @@
     <string name="cuisine_price">价格</string>
     <string name="title_target_list">餐桌列表</string>
     <string name="no_pending_customer">没有已点菜的客人</string>
+    <string name="menu_context_delete">删除</string>
 </resources>

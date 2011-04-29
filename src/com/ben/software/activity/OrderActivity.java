@@ -17,6 +17,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -114,6 +116,7 @@ public class OrderActivity extends Activity {
         mDataList = new ArrayList<Map<String, String>>();
 
         mOrderListView = (ListView) findViewById(R.id.orderList);
+        registerForContextMenu(mOrderListView);
 
         mOrderListView.addHeaderView(createListHeader());
         mSimpleAdapter = new SimpleAdapter(this, (List<Map<String, String>>) mDataList,
@@ -161,7 +164,7 @@ public class OrderActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate menu from XML resource
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.order, menu);
+        inflater.inflate(R.menu.order_option_menu, menu);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -170,7 +173,7 @@ public class OrderActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.v(LOG_TAG, "onOptionsItemSelected");
         switch (item.getItemId()) {
-        case R.id.order_commit:
+        case R.id.option_commit:
             Toast.makeText(this, "提交成功", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, FunctionListActivity.class);
             startActivity(intent);
@@ -178,6 +181,35 @@ public class OrderActivity extends Activity {
             return true;
         default:
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+        Log.v(LOG_TAG, "onCreateContextMenu");
+
+        // Inflate menu from XML resource
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.order_context_menu, menu);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Log.v(LOG_TAG, "onContextItemSelected");
+        AdapterView.AdapterContextMenuInfo info;
+        try {
+             info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        } catch (ClassCastException e) {
+            Log.v(LOG_TAG, "bad menuInfo", e);
+            return false;
+        }
+
+        switch (item.getItemId()) {
+        case R.id.context_delete:
+            Log.v(LOG_TAG, "onContextItemSelected - info.id : " + info.id);
+            return true;
+        default:
+            return super.onContextItemSelected(item);
         }
     }
 
