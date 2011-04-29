@@ -25,7 +25,7 @@ public class TargetListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.v(LOG_TAG,"onCreate");
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.target_list);
+        setContentView(R.layout.targets_list);
     }
 
     @Override
