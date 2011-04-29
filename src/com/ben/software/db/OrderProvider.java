@@ -5,6 +5,8 @@ import java.util.HashMap;
 import com.ben.software.Order;
 import com.ben.software.Order.CuisineColumns;
 import com.ben.software.Order.TargetColumns;
+import com.ben.software.Order.TargetTypeColumns;
+import com.ben.software.Order.TargetStateColumns;
 import com.ben.software.Order.OrderColumns;
 import com.ben.software.db.DatabaseHelper;
 
@@ -21,21 +23,51 @@ public class OrderProvider extends ContentProvider {
 
     private static final String LOG_TAG = "db.OrderProvider";
 
-    private static final String ORDER_TABLES = DatabaseHelper.DB_ORDERS_TABLE
-    + " INNER JOIN "
-    + DatabaseHelper.DB_TARGETS_TABLE + " ON targets._id = orders.targetid, "
-    + DatabaseHelper.DB_CUISINES_TABLE + " ON cuisines._id = orders.cuisineid";
+    private static final String ORDER_TABLES =
+        DatabaseHelper.DB_ORDERS_TABLE + ","
+        + DatabaseHelper.DB_CUISINES_TABLE + ","
+        + DatabaseHelper.DB_TARGETS_TABLE + ","
+        + DatabaseHelper.DB_TARGETSTATE_TABLE + ","
+        + DatabaseHelper.DB_TARGETTYPE_TABLE;
+
+//    private static final String TARGET_TABLES =
+//        DatabaseHelper.DB_TARGETS_TABLE + ","
+//        + DatabaseHelper.DB_TARGETSTATE_TABLE + ","
+//        + DatabaseHelper.DB_TARGETTYPE_TABLE;
+//
+//    private static final String TARFER_SELECTION =
+//        DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.STATE_ID + "="
+//        + DatabaseHelper.DB_TARGETSTATE_TABLE + "." + TargetStateColumns._ID
+//        + " AND "
+//        + DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.TYPE_ID + "="
+//        + DatabaseHelper.DB_TARGETTYPE_TABLE + "." + TargetTypeColumns._ID;
+
+    private static final String TARGET_TABLES =
+        DatabaseHelper.DB_TARGETS_TABLE + " INNER JOIN "
+        + DatabaseHelper.DB_TARGETSTATE_TABLE + " ON "
+        + DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.STATE_ID + "="
+        + DatabaseHelper.DB_TARGETSTATE_TABLE + "." + TargetStateColumns._ID + ","
+        + DatabaseHelper.DB_TARGETTYPE_TABLE + " ON "
+        + DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.TYPE_ID + "="
+        + DatabaseHelper.DB_TARGETTYPE_TABLE + "." + TargetTypeColumns._ID;
 
     private static final int CUISINES = 1;
     private static final int CUISINE_ID = 2;
     private static final int TARGETS = 3;
     private static final int TARGET_ID = 4;
-    private static final int ORDERS = 5;
-    private static final int ORDER_ID = 6;
+    private static final int TARGETTYPE = 5;
+    private static final int TARGETTYPE_ID = 6;
+    private static final int TARGETSTATE = 7;
+    private static final int TARGETSTATE_ID = 8;
+    private static final int ORDERS = 9;
+    private static final int ORDER_ID = 10;
+    private static final int ORDER_TARGET_ID = 11;
 
     private static UriMatcher mUriMatcher;
 
     private static HashMap<String, String> mCuisinesProjectionMap;
+    private static HashMap<String, String> mTargetStateProjectionMap;
+    private static HashMap<String, String> mTargetTypeProjectionMap;
     private static HashMap<String, String> mTargetsProjectionMap;
     private static HashMap<String, String> mOrdersProjectionMap;
 
@@ -69,14 +101,47 @@ public class OrderProvider extends ContentProvider {
             break;
 
         case TARGETS:
-            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE);
+            qb.setTables(TARGET_TABLES);
             qb.setProjectionMap(mTargetsProjectionMap);
+//            if (aSelection != null && aSelection.length() > 0) {
+//                aSelection += " AND " + TARFER_SELECTION;
+//            } else {
+//                aSelection = TARFER_SELECTION;
+//            }
+            if (projection == null) {
+                projection = mTargetsProjectionMap.keySet().toArray(new String[] {});
+            }
             break;
 
         case TARGET_ID:
-            qb.setTables(DatabaseHelper.DB_TARGETS_TABLE);
+            qb.setTables(TARGET_TABLES);
             qb.setProjectionMap(mTargetsProjectionMap);
             qb.appendWhere(TargetColumns._ID + "=" + aUri.getPathSegments().get(1));
+            if (projection == null) {
+                projection = mTargetsProjectionMap.keySet().toArray(new String[] {});
+            }
+            break;
+
+        case TARGETSTATE:
+            qb.setTables(DatabaseHelper.DB_TARGETSTATE_TABLE);
+            qb.setProjectionMap(mTargetStateProjectionMap);
+            break;
+
+        case TARGETSTATE_ID:
+            qb.setTables(DatabaseHelper.DB_TARGETSTATE_TABLE);
+            qb.setProjectionMap(mTargetStateProjectionMap);
+            qb.appendWhere(TargetStateColumns._ID + "=" + aUri.getPathSegments().get(1));
+            break;
+
+        case TARGETTYPE:
+            qb.setTables(DatabaseHelper.DB_TARGETTYPE_TABLE);
+            qb.setProjectionMap(mTargetTypeProjectionMap);
+            break;
+
+        case TARGETTYPE_ID:
+            qb.setTables(DatabaseHelper.DB_TARGETTYPE_TABLE);
+            qb.setProjectionMap(mTargetTypeProjectionMap);
+            qb.appendWhere(TargetTypeColumns._ID + "=" + aUri.getPathSegments().get(1));
             break;
 
         case ORDERS:
@@ -91,6 +156,15 @@ public class OrderProvider extends ContentProvider {
             qb.setTables(ORDER_TABLES);
             qb.setProjectionMap(mOrdersProjectionMap);
             qb.appendWhere(OrderColumns._ID + "=" + aUri.getPathSegments().get(1));
+            if (projection == null) {
+                projection = mOrdersProjectionMap.keySet().toArray(new String[] {});
+            }
+            break;
+
+        case ORDER_TARGET_ID:
+            qb.setTables(ORDER_TABLES);
+            qb.setProjectionMap(mOrdersProjectionMap);
+            qb.appendWhere(OrderColumns.TARGET_ID + "=" + aUri.getPathSegments().get(1));
             if (projection == null) {
                 projection = mOrdersProjectionMap.keySet().toArray(new String[] {});
             }
@@ -130,7 +204,24 @@ public class OrderProvider extends ContentProvider {
             type = TargetColumns.CONTENT_ITEM_TYPE;
             break;
 
+        case TARGETSTATE:
+            type = TargetStateColumns.CONTENT_TYPE;
+            break;
+
+        case TARGETSTATE_ID:
+            type = TargetStateColumns.CONTENT_ITEM_TYPE;
+            break;
+
+        case TARGETTYPE:
+            type = TargetTypeColumns.CONTENT_TYPE;
+            break;
+
+        case TARGETTYPE_ID:
+            type = TargetTypeColumns.CONTENT_ITEM_TYPE;
+            break;
+
         case ORDERS:
+        case ORDER_TARGET_ID:
             type = OrderColumns.CONTENT_TYPE;
             break;
 
@@ -168,13 +259,17 @@ public class OrderProvider extends ContentProvider {
 
     static {
         mUriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        mUriMatcher.addURI(Order.AUTHORITY, "cuisines", CUISINES);
-        mUriMatcher.addURI(Order.AUTHORITY, "cuisines/#", CUISINE_ID);
-        mUriMatcher.addURI(Order.AUTHORITY, "targets", TARGETS);
-        mUriMatcher.addURI(Order.AUTHORITY, "targets/#", TARGET_ID);
-        mUriMatcher.addURI(Order.AUTHORITY, "orders", ORDERS);
-        mUriMatcher.addURI(Order.AUTHORITY, "orders/#", ORDER_ID);
-
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_CUISINES_TABLE, CUISINES);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_CUISINES_TABLE + "/#", CUISINE_ID);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETS_TABLE, TARGETS);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETS_TABLE + "/#", TARGET_ID);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETSTATE_TABLE, TARGETSTATE);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETSTATE_TABLE + "/#", TARGETSTATE_ID);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETTYPE_TABLE, TARGETTYPE);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_TARGETTYPE_TABLE + "/#", TARGETTYPE_ID);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_ORDERS_TABLE, ORDERS);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_ORDERS_TABLE + "/#", ORDER_ID);
+        mUriMatcher.addURI(Order.AUTHORITY, DatabaseHelper.DB_ORDERS_TABLE + "/" + OrderColumns.TARGET_ID + "/#", ORDER_TARGET_ID);
 
         mCuisinesProjectionMap = new HashMap<String, String>();
         mCuisinesProjectionMap.put(CuisineColumns._ID, CuisineColumns._ID);
@@ -184,19 +279,34 @@ public class OrderProvider extends ContentProvider {
         mCuisinesProjectionMap.put(CuisineColumns.DISCOUNT, CuisineColumns.DISCOUNT);
         mCuisinesProjectionMap.put(CuisineColumns.REMARK, CuisineColumns.REMARK);
 
+        mTargetStateProjectionMap = new HashMap<String, String>();
+        mTargetStateProjectionMap.put(TargetStateColumns._ID, TargetStateColumns._ID);
+        mTargetStateProjectionMap.put(TargetStateColumns.NAME, TargetStateColumns.NAME);
+
+        mTargetTypeProjectionMap = new HashMap<String, String>();
+        mTargetTypeProjectionMap.put(TargetTypeColumns._ID, TargetTypeColumns._ID);
+        mTargetTypeProjectionMap.put(TargetTypeColumns.NAME, TargetTypeColumns.NAME);
+
         mTargetsProjectionMap = new HashMap<String, String>();
-        mTargetsProjectionMap.put(TargetColumns._ID, TargetColumns._ID);
-        mTargetsProjectionMap.put(TargetColumns.NAME, TargetColumns.NAME);
-        mTargetsProjectionMap.put(TargetColumns.ISUSED, TargetColumns.ISUSED);
+        mTargetsProjectionMap.put(TargetColumns._ID, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns._ID);
+        mTargetsProjectionMap.put(TargetColumns.NAME, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.NAME);
+        mTargetsProjectionMap.put(TargetColumns.TYPE_ID, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.TYPE_ID);
+        mTargetsProjectionMap.put(TargetColumns.STATE_ID, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.STATE_ID);
+        mTargetsProjectionMap.put(TargetColumns.CUSTOMER_COUNT, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.CUSTOMER_COUNT);
+        mTargetsProjectionMap.put(TargetColumns.TYPE_NAME, DatabaseHelper.DB_TARGETTYPE_TABLE + "." + TargetTypeColumns.NAME + " AS " + TargetColumns.TYPE_NAME);
+        mTargetsProjectionMap.put(TargetColumns.STATE_NAME, DatabaseHelper.DB_TARGETSTATE_TABLE + "." + TargetStateColumns.NAME + " AS " + TargetColumns.STATE_NAME);
+        mTargetsProjectionMap.put(TargetColumns.FULL_NAME, DatabaseHelper.DB_TARGETTYPE_TABLE + "." + TargetTypeColumns.NAME + " || " + DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.NAME + " AS " + TargetColumns.FULL_NAME);
 
         mOrdersProjectionMap = new HashMap<String, String>();
         mOrdersProjectionMap.put(OrderColumns._ID, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns._ID);
-        mOrdersProjectionMap.put(OrderColumns.TARGETID, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.TARGETID);
-        mOrdersProjectionMap.put(OrderColumns.CUISINEID, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.CUISINEID);
+        mOrdersProjectionMap.put(OrderColumns.TARGET_ID, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.TARGET_ID);
+        mOrdersProjectionMap.put(OrderColumns.CUISINE_ID, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.CUISINE_ID);
         mOrdersProjectionMap.put(OrderColumns.COUNT, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.COUNT);
         mOrdersProjectionMap.put(OrderColumns.REMARK, DatabaseHelper.DB_ORDERS_TABLE + "." + OrderColumns.REMARK);
-        mOrdersProjectionMap.put("targetname", DatabaseHelper.DB_TARGETS_TABLE + ".name as targetname");
-        mOrdersProjectionMap.put("cuisinename", DatabaseHelper.DB_CUISINES_TABLE + ".name as cuisinename");
+        mOrdersProjectionMap.put(OrderColumns.TARGET_NAME, DatabaseHelper.DB_TARGETS_TABLE + "." + TargetColumns.NAME + " AS " + OrderColumns.TARGET_NAME);
+        mOrdersProjectionMap.put(OrderColumns.CUISINE_NAME, DatabaseHelper.DB_CUISINES_TABLE + "." + CuisineColumns.NAME + " AS " + OrderColumns.CUISINE_NAME);
+        mOrdersProjectionMap.put(OrderColumns.TARGET_TYPE_NAME, DatabaseHelper.DB_TARGETTYPE_TABLE + "." + TargetTypeColumns.NAME + " AS " + OrderColumns.TARGET_TYPE_NAME);
+        mOrdersProjectionMap.put(OrderColumns.TARGET_STATE_NAME, DatabaseHelper.DB_TARGETSTATE_TABLE + "." + TargetStateColumns.NAME + " AS " + OrderColumns.TARGET_STATE_NAME);
     }
 
 }

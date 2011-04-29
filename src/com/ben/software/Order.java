@@ -92,6 +92,74 @@ public final class Order {
     /**
      * Target table
      */
+    public static final class TargetTypeColumns implements BaseColumns {
+        // This class cannot be instantiated
+        private TargetTypeColumns() {}
+
+        /**
+         * The content:// style URL for this table
+         */
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/targettype");
+
+        /**
+         * The default sort order for this table
+         */
+        public static final String DEFAULT_SORT_ORDER = "_id DESC";
+
+        /**
+         * The MIME type of {@link #CONTENT_URI} providing a directory of target type.
+         */
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.roadmap.targettype";
+
+        /**
+         * The MIME type of a {@link #CONTENT_URI} sub-directory of a single target type.
+         */
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.roadmap.targettype";
+
+        /**
+         * The name of the target type
+         * <P>Type: TEXT</P>
+         */
+        public static final String NAME = "name";
+    }
+
+    /**
+     * Target table
+     */
+    public static final class TargetStateColumns implements BaseColumns {
+        // This class cannot be instantiated
+        private TargetStateColumns() {}
+
+        /**
+         * The content:// style URL for this table
+         */
+        public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/targetstate");
+
+        /**
+         * The default sort order for this table
+         */
+        public static final String DEFAULT_SORT_ORDER = "_id DESC";
+
+        /**
+         * The MIME type of {@link #CONTENT_URI} providing a directory of target state.
+         */
+        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.roadmap.targetstate";
+
+        /**
+         * The MIME type of a {@link #CONTENT_URI} sub-directory of a single target state.
+         */
+        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.roadmap.targetstate";
+
+        /**
+         * The name of the target state
+         * <P>Type: TEXT</P>
+         */
+        public static final String NAME = "name";
+    }
+
+    /**
+     * Target table
+     */
     public static final class TargetColumns implements BaseColumns {
         // This class cannot be instantiated
         private TargetColumns() {}
@@ -123,10 +191,40 @@ public final class Order {
         public static final String NAME = "name";
 
         /**
-         * The use state of the target
-         * <P>Type: BOOLEAN</P>
+         * The full name of the target(including target type)
+         * <P>Type: TEXT</P>
          */
-        public static final String ISUSED = "isused";
+        public static final String FULL_NAME = "full_name";
+
+        /**
+         * The use state's id of the target
+         * <P>Type: INTEGER</P>
+         */
+        public static final String STATE_ID = "state_id";
+
+        /**
+         * The name of use state
+         * <P>Type: TEXT</P>
+         */
+        public static final String STATE_NAME = "state_name";
+
+        /**
+         * The type's id of the target
+         * <P>Type: INTEGER</P>
+         */
+        public static final String TYPE_ID = "type_id";
+
+        /**
+         * The name of the type
+         * <P>Type: TEXT</P>
+         */
+        public static final String TYPE_NAME = "type_name";
+
+        /**
+         * The customer count of the target
+         * <P>Type: INTEGER</P>
+         */
+        public static final String CUSTOMER_COUNT = "customer_count";
     }
 
     /**
@@ -160,13 +258,37 @@ public final class Order {
          * The target id of the order
          * <P>Type: INTEGER</P>
          */
-        public static final String TARGETID = "targetid";
+        public static final String TARGET_ID = "target_id";
+
+        /**
+         * The target name of the order
+         * <P>Type: TEXT</P>
+         */
+        public static final String TARGET_NAME = "target_name";
+
+        /**
+         * The name of target's use state
+         * <P>Type: TEXT</P>
+         */
+        public static final String TARGET_STATE_NAME = "target_state_name";
+
+        /**
+         * The name of the target's type
+         * <P>Type: TEXT</P>
+         */
+        public static final String TARGET_TYPE_NAME = "target_type_name";
 
         /**
          * The cuisine id of the order
          * <P>Type: INTEGER</P>
          */
-        public static final String CUISINEID = "cuisineid";
+        public static final String CUISINE_ID = "cuisine_id";
+
+        /**
+         * The name of the cuisine
+         * <P>Type: INTEGER</P>
+         */
+        public static final String CUISINE_NAME = "cuisine_name";
 
         /**
          * The count of the cuisine in the order

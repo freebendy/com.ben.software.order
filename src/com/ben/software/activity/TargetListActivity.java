@@ -1,7 +1,7 @@
 package com.ben.software.activity;
 
+import com.ben.software.Order.TargetColumns;
 import com.ben.software.R;
-import com.ben.software.Order.OrderColumns;
 
 import android.app.ListActivity;
 import android.database.Cursor;
@@ -16,7 +16,9 @@ public class TargetListActivity extends ListActivity {
     private static final String LOG_TAG = "activity.TargetList";
 
     private static final String[] PROJECTION = new String[] {
-        OrderColumns._ID, OrderColumns.TARGETID, "targetname"
+        TargetColumns._ID, TargetColumns.NAME, TargetColumns.STATE_ID,
+        TargetColumns.STATE_NAME, TargetColumns.TYPE_ID, TargetColumns.TYPE_NAME,
+        TargetColumns.CUSTOMER_COUNT,TargetColumns.FULL_NAME
     };
 
     @Override
@@ -30,12 +32,12 @@ public class TargetListActivity extends ListActivity {
     protected void onResume() {
         Log.v(LOG_TAG,"onResume");
         super.onResume();
-        Cursor cursor = managedQuery(OrderColumns.CONTENT_URI, PROJECTION, null, null, null);
+        Cursor cursor = managedQuery(TargetColumns.CONTENT_URI, PROJECTION, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             setListAdapter(new SimpleCursorAdapter(
                     this,android.R.layout.simple_list_item_1, cursor,
-                    new String[] {"targetname"},
+                    new String[] {TargetColumns.FULL_NAME},
                     new int[] {android.R.id.text1}));
         }
     }
