@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <GridView
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:id="@+id/targetGrid"
+        android:gravity="center"
+        android:padding="5dp"
+        android:verticalSpacing="10dp"
+        android:horizontalSpacing="10dp"
+        android:columnWidth="60dp"
+        android:numColumns="auto_fit"></GridView>
+</LinearLayout>

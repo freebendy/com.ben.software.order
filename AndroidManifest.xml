@@ -23,6 +23,9 @@
         <activity android:name=".activity.TargetListActivity"
             android:label="@string/title_target_list"/>
 
+        <activity android:name=".activity.TargetGridActivity"
+            android:label="@string/title_target_list"/>
+
         <activity android:name=".activity.SystemPrefereneActivity"
             android:label="@string/title_system_option"/>
 

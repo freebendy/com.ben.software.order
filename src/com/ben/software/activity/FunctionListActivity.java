@@ -32,7 +32,8 @@ public class FunctionListActivity extends ListActivity {
             Intent intent = new Intent(this, OrderActivity.class);
             startActivity(intent);
         } else if (id == 1) {
-            Intent intent = new Intent(this, TargetListActivity.class);
+//            Intent intent = new Intent(this, TargetListActivity.class);
+            Intent intent = new Intent(this, TargetGridActivity.class);
             startActivity(intent);
         } else if (id == 2) {
             Intent intent = new Intent(this, SystemPrefereneActivity.class);
